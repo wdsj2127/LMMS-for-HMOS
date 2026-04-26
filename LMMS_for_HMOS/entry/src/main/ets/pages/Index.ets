@@ -1,23 +1,85 @@
+import QtAppConstants from '../common/QtAppConstants';
+
 @Entry
 @Component
 struct Index {
-    @State message: string = 'Hello World';
+    @State statusMessage: string = 'LMMS for HarmonyOS';
+    @State statusDetail: string = 'Loading Qt Application...';
+    @State isQtLoaded: boolean = false;
+
+    aboutToAppear(): void {
+        this.initQtApp();
+    }
+
+    private initQtApp(): void {
+        try {
+            if (globalThis.qtAppLibName) {
+                this.statusDetail = `Qt app: ${globalThis.qtAppLibName}`;
+                this.isQtLoaded = true;
+            } else {
+                this.statusDetail = 'Qt runtime not yet loaded. Ensure Qt for HarmonyOS libraries are in entry/libs/arm64-v8a/';
+            }
+        } catch (err) {
+            this.statusDetail = `Error: ${JSON.stringify(err)}`;
+        }
+    }
 
     build() {
-        RelativeContainer() {
-            Text(this.message)
-                .id('HelloWorld')
-                .fontSize($r('app.float.page_text_font_size'))
+        Column() {
+            Text(this.statusMessage)
+                .fontSize(28)
                 .fontWeight(FontWeight.Bold)
-                .alignRules({
-                    center: { anchor: '__container__', align: VerticalAlign.Center },
-                    middle: { anchor: '__container__', align: HorizontalAlign.Center }
-                })
-                .onClick(() => {
-                    this.message = 'Welcome';
-                })
+                .fontColor('#FFFFFF')
+                .margin({ bottom: 16 })
+
+            Text(this.statusDetail)
+                .fontSize(16)
+                .fontColor('#AAAAAA')
+                .margin({ bottom: 32 })
+
+            if (!this.isQtLoaded) {
+                Column() {
+                    Text('Setup Instructions:')
+                        .fontSize(14)
+                        .fontWeight(FontWeight.Bold)
+                        .fontColor('#CCCCCC')
+                        .margin({ bottom: 8 })
+
+                    Text('1. Build Qt 5.15.16 for HarmonyOS')
+                        .fontSize(12)
+                        .fontColor('#999999')
+                        .margin({ bottom: 4 })
+
+                    Text('2. Cross-compile LMMS with ohos-clang')
+                        .fontSize(12)
+                        .fontColor('#999999')
+                        .margin({ bottom: 4 })
+
+                    Text('3. Copy .so files to entry/libs/arm64-v8a/')
+                        .fontSize(12)
+                        .fontColor('#999999')
+                        .margin({ bottom: 4 })
+
+                    Text('4. Set APP_LIBRARY_NAME in QtAppConstants.ets')
+                        .fontSize(12)
+                        .fontColor('#999999')
+                }
+                .alignItems(HorizontalAlign.Start)
+                .padding(16)
+                .backgroundColor('#2A2A2A')
+                .borderRadius(8)
+            }
+
+            LoadingProgress()
+                .color('#4CAF50')
+                .width(48)
+                .height(48)
+                .margin({ top: 24 })
         }
-        .height('100%')
         .width('100%')
+        .height('100%')
+        .justifyContent(FlexAlign.Center)
+        .backgroundColor('#1A1A1A')
+        .padding(24)
     }
 }

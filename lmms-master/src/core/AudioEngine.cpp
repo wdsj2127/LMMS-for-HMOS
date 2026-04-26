@@ -45,6 +45,7 @@
 #include "AudioSoundIo.h"
 #include "AudioPulseAudio.h"
 #include "AudioSdl.h"
+#include "AudioOhAudio.h"
 #include "AudioDummy.h"
 
 // platform-specific midi-interface-classes
@@ -55,6 +56,7 @@
 #include "MidiSndio.h"
 #include "MidiWinMM.h"
 #include "MidiApple.h"
+#include "MidiOhMidi.h"
 #include "MidiDummy.h"
 
 #include "BufferManager.h"
@@ -639,6 +641,13 @@ bool AudioEngine::isAudioDevNameValid(QString name)
 	}
 #endif
 
+#ifdef LMMS_HAVE_OHAUDIO
+	if (name == AudioOhAudio::name())
+	{
+		return true;
+	}
+#endif
+
 	if (name == AudioDummy::name())
 	{
 		return true;
@@ -686,6 +695,13 @@ bool AudioEngine::isMidiDevNameValid(QString name)
 
 #ifdef LMMS_BUILD_APPLE
     if (name == MidiApple::name())
+    {
+		return true;
+    }
+#endif
+
+#ifdef LMMS_HAVE_OH_MIDI
+    if (name == MidiOhMidi::name())
     {
 		return true;
     }
@@ -821,6 +837,19 @@ AudioDevice * AudioEngine::tryAudioDevices()
 	}
 #endif
 
+#ifdef LMMS_HAVE_OHAUDIO
+	if( dev_name == AudioOhAudio::name() || dev_name == "" )
+	{
+		dev = new AudioOhAudio( success_ful, this );
+		if( success_ful )
+		{
+			m_audioDevName = AudioOhAudio::name();
+			return dev;
+		}
+		delete dev;
+	}
+#endif
+
 
 	// add more device-classes here...
 	//dev = new audioXXXX( SAMPLE_RATES[m_qualityLevel], success_ful, this );
@@ -941,6 +970,15 @@ MidiClient * AudioEngine::tryMidiClients()
         return mapple;
     }
     printf( "midi apple didn't work: client_name=%s\n", client_name.toUtf8().constData());
+#endif
+
+#ifdef LMMS_HAVE_OH_MIDI
+	if( client_name == MidiOhMidi::name() || client_name == "" )
+	{
+		MidiOhMidi * mohmidi = new MidiOhMidi;
+		m_midiClientName = MidiOhMidi::name();
+		return mohmidi;
+	}
 #endif
 
 	if(client_name != MidiDummy::name())

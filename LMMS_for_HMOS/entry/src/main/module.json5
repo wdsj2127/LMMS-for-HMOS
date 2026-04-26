@@ -43,7 +43,41 @@
                         "name": "ohos.extension.backup",
                         "resource": "$profile:backup_config"
                     }
-                ],
+                ]
+            }
+        ],
+        "requestPermissions": [
+            {
+                "name": "ohos.permission.READ_MEDIA",
+                "reason": "$string:read_media_reason",
+                "usedScene": {
+                    "abilities": ["EntryAbility"],
+                    "when": "inuse"
+                }
+            },
+            {
+                "name": "ohos.permission.WRITE_MEDIA",
+                "reason": "$string:write_media_reason",
+                "usedScene": {
+                    "abilities": ["EntryAbility"],
+                    "when": "inuse"
+                }
+            },
+            {
+                "name": "ohos.permission.ACCESS_DLP_FILE",
+                "reason": "$string:access_file_reason",
+                "usedScene": {
+                    "abilities": ["EntryAbility"],
+                    "when": "inuse"
+                }
+            },
+            {
+                "name": "ohos.permission.KEEP_BACKGROUND_RUNNING",
+                "reason": "$string:background_audio_reason",
+                "usedScene": {
+                    "abilities": ["EntryAbility"],
+                    "when": "always"
+                }
             }
         ]
     }

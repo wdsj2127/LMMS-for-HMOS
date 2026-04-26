@@ -149,6 +149,10 @@ IF(LMMS_BUILD_APPLE)
 	SET(EXTRA_LIBRARIES "-framework CoreMIDI -framework CoreFoundation")
 ENDIF()
 
+IF(LMMS_BUILD_OHOS)
+	SET(EXTRA_LIBRARIES "ohaudio" "ohmidi")
+ENDIF()
+
 if(LMMS_HAVE_OSS AND LMMS_BUILD_OPENBSD)
     SET(EXTRA_LIBRARIES "-lossaudio")
 endif()

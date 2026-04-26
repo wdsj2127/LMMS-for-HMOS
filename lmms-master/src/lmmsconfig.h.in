@@ -5,6 +5,7 @@
 #cmakedefine LMMS_BUILD_OPENBSD
 #cmakedefine LMMS_BUILD_FREEBSD
 #cmakedefine LMMS_BUILD_HAIKU
+#cmakedefine LMMS_BUILD_OHOS
 
 #cmakedefine LMMS_HOST_X86
 #cmakedefine LMMS_HOST_X86_64
@@ -31,6 +32,8 @@
 #cmakedefine LMMS_HAVE_SOUNDIO
 #cmakedefine LMMS_HAVE_PULSEAUDIO
 #cmakedefine LMMS_HAVE_SDL
+#cmakedefine LMMS_HAVE_OHAUDIO
+#cmakedefine LMMS_HAVE_OH_MIDI
 #cmakedefine LMMS_HAVE_STK
 #cmakedefine LMMS_HAVE_VST
 #cmakedefine LMMS_HAVE_VST_32

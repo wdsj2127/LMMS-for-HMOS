@@ -2,15 +2,31 @@
     "string": [
         {
             "name": "module_desc",
-            "value": "module description"
+            "value": "LMMS for HarmonyOS - Digital Audio Workstation"
         },
         {
             "name": "EntryAbility_desc",
-            "value": "description"
+            "value": "LMMS Digital Audio Workstation main ability"
         },
         {
             "name": "EntryAbility_label",
-            "value": "label"
+            "value": "LMMS"
+        },
+        {
+            "name": "read_media_reason",
+            "value": "LMMS needs to read audio files and project files"
+        },
+        {
+            "name": "write_media_reason",
+            "value": "LMMS needs to save project files and export audio"
+        },
+        {
+            "name": "access_file_reason",
+            "value": "LMMS needs to access project and audio files on the device"
+        },
+        {
+            "name": "background_audio_reason",
+            "value": "LMMS needs to continue audio playback when the app is in the background"
         }
     ]
 }

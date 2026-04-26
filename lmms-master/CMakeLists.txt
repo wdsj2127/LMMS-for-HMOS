@@ -110,6 +110,43 @@ option(WANT_CPACK_TARBALL "Request CPack to create a tarball instead of an insta
 option(WANT_QT6 "Build with experimental Qt6 support" OFF)
 
 
+OPTION(WANT_OHAUDIO	"Include OHAudio (HarmonyOS) audio support" OFF)
+OPTION(WANT_OH_MIDI	"Include HarmonyOS MIDI support" OFF)
+
+IF(LMMS_BUILD_OHOS)
+	SET(WANT_ALSA OFF)
+	SET(WANT_OSS OFF)
+	SET(WANT_PULSEAUDIO OFF)
+	SET(WANT_SNDIO OFF)
+	SET(WANT_SOUNDIO OFF)
+	SET(WANT_SDL OFF)
+	SET(WANT_JACK OFF)
+	SET(WANT_WEAKJACK OFF)
+	SET(WANT_LV2 OFF)
+	SET(WANT_SUIL OFF)
+	SET(WANT_CARLA OFF)
+	SET(WANT_VST OFF)
+	SET(WANT_VST_32 OFF)
+	SET(WANT_VST_64 OFF)
+	SET(WANT_WINMM OFF)
+	SET(WANT_OHAUDIO ON)
+	SET(WANT_OH_MIDI ON)
+	SET(BUNDLE_QT_TRANSLATIONS ON)
+	SET(STATUS_ALSA "<not supported on this platform>")
+	SET(STATUS_OSS "<not supported on this platform>")
+	SET(STATUS_PULSEAUDIO "<not supported on this platform>")
+	SET(STATUS_SNDIO "<not supported on this platform>")
+	SET(STATUS_SOUNDIO "<not supported on this platform>")
+	SET(STATUS_SDL "<not supported on this platform>")
+	SET(STATUS_JACK "<not supported on this platform>")
+	SET(STATUS_LV2 "<not supported on this platform>")
+	SET(STATUS_CARLA "<not supported on this platform>")
+	SET(STATUS_VST "<not supported on this platform>")
+	SET(STATUS_WINMM "<not supported on this platform>")
+	SET(STATUS_OHAUDIO "OK")
+	SET(STATUS_OH_MIDI "OK")
+ENDIF()
+
 IF(LMMS_BUILD_APPLE)
 	# Fix linking on 10.14+. See issue #4762 on github
 	LINK_DIRECTORIES("${APPLE_PREFIX}/lib")
@@ -174,6 +211,10 @@ include(CheckLibraryExists)
 check_library_exists(rt shm_open "" LMMS_HAVE_LIBRT)
 
 LIST(APPEND CMAKE_PREFIX_PATH "${CMAKE_INSTALL_PREFIX}")
+
+if(LMMS_BUILD_OHOS AND DEFINED QT_OHOS_INSTALL_DIR)
+	list(APPEND CMAKE_PREFIX_PATH "${QT_OHOS_INSTALL_DIR}")
+endif()
 
 if(WANT_QT6)
 	set(QT_VERSION_MAJOR 6)
@@ -549,9 +590,9 @@ If(WANT_GIG)
 ENDIF(WANT_GIG)
 
 # check for pthreads
-IF(LMMS_BUILD_LINUX OR LMMS_BUILD_APPLE OR LMMS_BUILD_OPENBSD OR LMMS_BUILD_FREEBSD OR LMMS_BUILD_HAIKU)
+IF(LMMS_BUILD_LINUX OR LMMS_BUILD_APPLE OR LMMS_BUILD_OPENBSD OR LMMS_BUILD_FREEBSD OR LMMS_BUILD_HAIKU OR LMMS_BUILD_OHOS)
 	FIND_PACKAGE(Threads)
-ENDIF(LMMS_BUILD_LINUX OR LMMS_BUILD_APPLE OR LMMS_BUILD_OPENBSD OR LMMS_BUILD_FREEBSD OR LMMS_BUILD_HAIKU)
+ENDIF(LMMS_BUILD_LINUX OR LMMS_BUILD_APPLE OR LMMS_BUILD_OPENBSD OR LMMS_BUILD_FREEBSD OR LMMS_BUILD_HAIKU OR LMMS_BUILD_OHOS)
 
 # check for sndio (roaraudio won't work yet)
 IF(WANT_SNDIO)
@@ -828,6 +869,7 @@ MESSAGE(
 "* libsoundio                  : ${STATUS_SOUNDIO}\n"
 "* PulseAudio                  : ${STATUS_PULSEAUDIO}\n"
 "* SDL                         : ${STATUS_SDL}\n"
+"* OHAudio (HarmonyOS)         : ${STATUS_OHAUDIO}\n"
 )
 
 MESSAGE(
@@ -839,6 +881,7 @@ MESSAGE(
 "* JACK                        : ${STATUS_JACK}\n"
 "* WinMM                       : ${STATUS_WINMM}\n"
 "* AppleMidi                   : ${STATUS_APPLEMIDI}\n"
+"* HarmonyOS MIDI              : ${STATUS_OH_MIDI}\n"
 )
 
 MESSAGE(

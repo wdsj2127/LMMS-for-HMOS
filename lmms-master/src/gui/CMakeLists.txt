@@ -1,7 +1,6 @@
 SET(LMMS_SRCS
 	${LMMS_SRCS}
 	gui/ActionGroup.cpp
-	gui/AudioAlsaSetupWidget.cpp
 	gui/AudioDeviceSetupWidget.cpp
 	gui/AutomatableModelView.cpp
 	gui/ControlLayout.cpp
@@ -22,7 +21,6 @@ SET(LMMS_SRCS
 	gui/LinkedModelGroupViews.cpp
 	gui/LmmsPalette.cpp
 	gui/LmmsStyle.cpp
-	gui/Lv2ViewBase.cpp
 	gui/MainApplication.cpp
 	gui/MainWindow.cpp
 	gui/MicrotunerConfig.cpp
@@ -129,7 +127,19 @@ SET(LMMS_SRCS
 	gui/widgets/TextFloat.cpp
 	gui/widgets/TimeDisplayWidget.cpp
 	gui/widgets/ToolButton.cpp
-
-	PARENT_SCOPE
 )
+
+# Platform-specific GUI sources
+if(NOT LMMS_BUILD_OHOS)
+	list(APPEND LMMS_SRCS
+		gui/AudioAlsaSetupWidget.cpp
+		gui/Lv2ViewBase.cpp
+	)
+else()
+	list(APPEND LMMS_SRCS
+		gui/AudioOhAudioSetupWidget.cpp
+	)
+endif()
+
+set(LMMS_SRCS ${LMMS_SRCS} PARENT_SCOPE)
 

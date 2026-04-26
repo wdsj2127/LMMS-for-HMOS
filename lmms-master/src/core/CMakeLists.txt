@@ -91,46 +91,83 @@ set(LMMS_SRCS
 	core/VstSyncController.cpp
 	core/StepRecorder.cpp
 
-	core/audio/AudioAlsa.cpp
 	core/audio/AudioDevice.cpp
 	core/audio/AudioFileDevice.cpp
 	core/audio/AudioFileMP3.cpp
 	core/audio/AudioFileOgg.cpp
 	core/audio/AudioFileFlac.cpp
 	core/audio/AudioFileWave.cpp
-	core/audio/AudioJack.cpp
-	core/audio/AudioOss.cpp
-	core/audio/AudioSndio.cpp
-	core/audio/AudioPortAudio.cpp
-	core/audio/AudioSoundIo.cpp
-	core/audio/AudioPulseAudio.cpp
 	core/audio/AudioSampleRecorder.cpp
-	core/audio/AudioSdl.cpp
+)
 
-	core/lv2/Lv2Basics.cpp
-	core/lv2/Lv2ControlBase.cpp
-	core/lv2/Lv2Evbuf.cpp
-	core/lv2/Lv2Features.cpp
-	core/lv2/Lv2Ports.cpp
-	core/lv2/Lv2Proc.cpp
-	core/lv2/Lv2Manager.cpp
-	core/lv2/Lv2Options.cpp
-	core/lv2/Lv2SubPluginFeatures.cpp
-	core/lv2/Lv2UridCache.cpp
-	core/lv2/Lv2UridMap.cpp
-	core/lv2/Lv2Worker.cpp
+# Platform-specific audio backends
+if(LMMS_BUILD_OHOS)
+	list(APPEND LMMS_SRCS
+		core/audio/AudioOhAudio.cpp
+		core/OhosFileSystem.cpp
+		core/OhosPluginLoader.cpp
+		core/PluginCrashGuard.cpp
+		core/midi/MidiEventThrottle.cpp
+	)
+else()
+	list(APPEND LMMS_SRCS
+		core/audio/AudioAlsa.cpp
+		core/audio/AudioJack.cpp
+		core/audio/AudioOss.cpp
+		core/audio/AudioSndio.cpp
+		core/audio/AudioPortAudio.cpp
+		core/audio/AudioSoundIo.cpp
+		core/audio/AudioPulseAudio.cpp
+		core/audio/AudioSdl.cpp
+	)
+endif()
 
-	core/midi/MidiAlsaRaw.cpp
-	core/midi/MidiAlsaSeq.cpp
+# LV2 support (not available on OHOS)
+if(NOT LMMS_BUILD_OHOS)
+	list(APPEND LMMS_SRCS
+		core/lv2/Lv2Basics.cpp
+		core/lv2/Lv2ControlBase.cpp
+		core/lv2/Lv2Evbuf.cpp
+		core/lv2/Lv2Features.cpp
+		core/lv2/Lv2Ports.cpp
+		core/lv2/Lv2Proc.cpp
+		core/lv2/Lv2Manager.cpp
+		core/lv2/Lv2Options.cpp
+		core/lv2/Lv2SubPluginFeatures.cpp
+		core/lv2/Lv2UridCache.cpp
+		core/lv2/Lv2UridMap.cpp
+		core/lv2/Lv2Worker.cpp
+	)
+endif()
+
+# MIDI backends
+list(APPEND LMMS_SRCS
 	core/midi/MidiClient.cpp
 	core/midi/MidiController.cpp
 	core/midi/MidiEventToByteSeq.cpp
-	core/midi/MidiJack.cpp
-	core/midi/MidiOss.cpp
-	core/midi/MidiSndio.cpp
-	core/midi/MidiApple.cpp
 	core/midi/MidiPort.cpp
-	core/midi/MidiWinMM.cpp
-
-	PARENT_SCOPE
 )
+
+if(LMMS_BUILD_OHOS)
+	list(APPEND LMMS_SRCS
+		core/midi/MidiOhMidi.cpp
+	)
+elseif(LMMS_BUILD_APPLE)
+	list(APPEND LMMS_SRCS
+		core/midi/MidiApple.cpp
+	)
+elseif(LMMS_BUILD_WIN32)
+	list(APPEND LMMS_SRCS
+		core/midi/MidiWinMM.cpp
+	)
+else()
+	list(APPEND LMMS_SRCS
+		core/midi/MidiAlsaRaw.cpp
+		core/midi/MidiAlsaSeq.cpp
+		core/midi/MidiJack.cpp
+		core/midi/MidiOss.cpp
+		core/midi/MidiSndio.cpp
+	)
+endif()
+
+set(LMMS_SRCS ${LMMS_SRCS} PARENT_SCOPE)
