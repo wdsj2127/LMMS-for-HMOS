@@ -46,6 +46,8 @@ const QString& FileRevealer::getDefaultFileManager()
 	fileManagerCache = "explorer";
 #elif defined(LMMS_BUILD_APPLE)
 	fileManagerCache = "open";
+#elif defined(LMMS_BUILD_OHOS)
+	fileManagerCache = "ohos-file-manager";
 #else
 
 	QString desktopEnv = qgetenv("XDG_CURRENT_DESKTOP").trimmed().toLower();
@@ -110,7 +112,11 @@ void FileRevealer::openDir(const QFileInfo item)
 {
 	QString nativePath = QDir::toNativeSeparators(item.canonicalFilePath());
 
+#ifdef LMMS_BUILD_OHOS
+	QDesktopServices::openUrl(QUrl::fromLocalFile(item.canonicalFilePath()));
+#else
 	QProcess::startDetached(getDefaultFileManager(), {nativePath});
+#endif
 }
 
 const QStringList& FileRevealer::getSelectCommand()
@@ -153,6 +159,9 @@ const QStringList& FileRevealer::getSelectCommand()
 
 void FileRevealer::reveal(const QFileInfo item)
 {
+#ifdef LMMS_BUILD_OHOS
+	QDesktopServices::openUrl(QUrl::fromLocalFile(item.canonicalPath()));
+#else
 	// Sets selectCommandCache, canSelect
 	const QStringList& selectCommand = getSelectCommand();
 	if (!s_canSelect)
@@ -168,6 +177,7 @@ void FileRevealer::reveal(const QFileInfo item)
 
 	params << path;
 	QProcess::startDetached(getDefaultFileManager(), params);
+#endif
 }
 
 bool FileRevealer::supportsArg(const QString& command, const QString& arg)

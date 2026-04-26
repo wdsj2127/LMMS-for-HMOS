@@ -1,0 +1,57 @@
+{
+    "version": 6,
+    "cmakeMinimumRequired": { "major": 3, "minor": 21, "patch": 0 },
+    "configurePresets": [
+        {
+            "name": "ohos-arm64-release",
+            "displayName": "HarmonyOS ARM64 Release",
+            "description": "Cross-compile LMMS for HarmonyOS (OHOS) ARM64 with Qt for HarmonyOS",
+            "generator": "Ninja",
+            "binaryDir": "${sourceParentDir}/build_lmms_ohos",
+            "cacheVariables": {
+                "CMAKE_TOOLCHAIN_FILE": { "type": "FILEPATH", "value": "${sourceDir}/cmake/ohos-toolchain.cmake" },
+                "LMMS_BUILD_OHOS": { "type": "BOOL", "value": "ON" },
+                "CMAKE_BUILD_TYPE": { "type": "STRING", "value": "Release" },
+                "WANT_OHAUDIO": { "type": "BOOL", "value": "ON" },
+                "WANT_OH_MIDI": { "type": "BOOL", "value": "ON" },
+                "WANT_ALSA": { "type": "BOOL", "value": "OFF" },
+                "WANT_OSS": { "type": "BOOL", "value": "OFF" },
+                "WANT_PULSEAUDIO": { "type": "BOOL", "value": "OFF" },
+                "WANT_SDL": { "type": "BOOL", "value": "OFF" },
+                "WANT_JACK": { "type": "BOOL", "value": "OFF" },
+                "WANT_LV2": { "type": "BOOL", "value": "OFF" },
+                "WANT_CARLA": { "type": "BOOL", "value": "OFF" },
+                "WANT_VST": { "type": "BOOL", "value": "OFF" },
+                "WANT_PORTAUDIO": { "type": "BOOL", "value": "OFF" },
+                "WANT_SOUNDIO": { "type": "BOOL", "value": "OFF" },
+                "WANT_SNDIO": { "type": "BOOL", "value": "OFF" },
+                "WANT_GIG": { "type": "BOOL", "value": "OFF" },
+                "WANT_STK": { "type": "BOOL", "value": "OFF" },
+                "WANT_SF2": { "type": "BOOL", "value": "ON" }
+            },
+            "environment": {
+                "NATIVE_OHOS_SDK": { "value": "$env{NATIVE_OHOS_SDK}", "type": "PATH" }
+            }
+        },
+        {
+            "name": "ohos-arm64-debug",
+            "displayName": "HarmonyOS ARM64 Debug",
+            "inherits": "ohos-arm64-release",
+            "cacheVariables": {
+                "CMAKE_BUILD_TYPE": { "type": "STRING", "value": "Debug" }
+            }
+        }
+    ],
+    "buildPresets": [
+        {
+            "name": "ohos-arm64-release",
+            "configurePreset": "ohos-arm64-release",
+            "configuration": "Release"
+        },
+        {
+            "name": "ohos-arm64-debug",
+            "configurePreset": "ohos-arm64-debug",
+            "configuration": "Debug"
+        }
+    ]
+}
