@@ -12,15 +12,12 @@ struct Index {
     }
 
     private initQtApp(): void {
-        try {
-            if (globalThis.qtAppLibName) {
-                this.statusDetail = `Qt app: ${globalThis.qtAppLibName}`;
-                this.isQtLoaded = true;
-            } else {
-                this.statusDetail = 'Qt runtime not yet loaded. Ensure Qt for HarmonyOS libraries are in entry/libs/arm64-v8a/';
-            }
-        } catch (err) {
-            this.statusDetail = `Error: ${JSON.stringify(err)}`;
+        const qtLibName: string = AppStorage.get<string>('qtAppLibName') ?? '';
+        if (qtLibName.length > 0) {
+            this.statusDetail = 'Qt app: ' + qtLibName;
+            this.isQtLoaded = true;
+        } else {
+            this.statusDetail = QtAppConstants.APP_LIBRARY_NAME + ' - Qt runtime pending.';
         }
     }
 

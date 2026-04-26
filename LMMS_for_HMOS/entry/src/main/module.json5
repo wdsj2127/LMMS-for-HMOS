@@ -64,7 +64,7 @@
                 }
             },
             {
-                "name": "ohos.permission.ACCESS_DLP_FILE",
+                "name": "ohos.permission.FILE_ACCESS_PERSIST",
                 "reason": "$string:access_file_reason",
                 "usedScene": {
                     "abilities": ["EntryAbility"],

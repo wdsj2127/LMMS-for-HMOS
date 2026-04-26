@@ -15,22 +15,11 @@ export default class EntryAbility extends UIAbility {
         }
         hilog.info(DOMAIN, TAG, 'LMMS for HarmonyOS onCreate');
 
-        this.loadQtApplication();
-    }
+        AppStorage.setOrCreate<string>('qtAppLibName', QtAppConstants.APP_LIBRARY_NAME);
+        AppStorage.setOrCreate<string>('qtQpaPlatform', QtAppConstants.QT_QPA_PLATFORM);
+        AppStorage.setOrCreate<string>('qtPluginPath', QtAppConstants.QT_PLUGIN_PATH);
 
-    private loadQtApplication(): void {
-        try {
-            hilog.info(DOMAIN, TAG, 'Loading Qt application: %{public}s', QtAppConstants.APP_LIBRARY_NAME);
-
-            const libPath = this.context.resourceDir + '/../../../libs/arm64-v8a/' + QtAppConstants.APP_LIBRARY_NAME;
-            hilog.info(DOMAIN, TAG, 'Library path: %{public}s', libPath);
-
-            globalThis.qtAppLibName = QtAppConstants.APP_LIBRARY_NAME;
-            globalThis.qtQpaPlatform = QtAppConstants.QT_QPA_PLATFORM;
-            globalThis.qtPluginPath = QtAppConstants.QT_PLUGIN_PATH;
-        } catch (err) {
-            hilog.error(DOMAIN, TAG, 'Failed to load Qt application: %{public}s', JSON.stringify(err));
-        }
+        hilog.info(DOMAIN, TAG, 'Qt app configured: %{public}s', QtAppConstants.APP_LIBRARY_NAME);
     }
 
     onDestroy(): void {

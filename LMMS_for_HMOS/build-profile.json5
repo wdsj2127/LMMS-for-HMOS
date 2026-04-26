@@ -1,12 +1,26 @@
 {
     "app": {
-        "signingConfigs": [],
+        "signingConfigs": [
+            {
+                "name": "default",
+                "type": "HarmonyOS",
+                "material": {
+                    "certpath": "C:\\Users\\21272\\.ohos\\config\\default_LMMS_for_HMOS_M9anRl0YQpjHyMp-apxpaRhvAuxNW1reR1lNfhNajZ0=.cer",
+                    "keyAlias": "debugKey",
+                    "keyPassword": "0000001B97B23C51E11A401F0CE33C4F0A925567D83D74183F25BE546A8C37FD3CA395120FC4D10B27314E",
+                    "profile": "C:\\Users\\21272\\.ohos\\config\\default_LMMS_for_HMOS_M9anRl0YQpjHyMp-apxpaRhvAuxNW1reR1lNfhNajZ0=.p7b",
+                    "signAlg": "SHA256withECDSA",
+                    "storeFile": "C:\\Users\\21272\\.ohos\\config\\default_LMMS_for_HMOS_M9anRl0YQpjHyMp-apxpaRhvAuxNW1reR1lNfhNajZ0=.p12",
+                    "storePassword": "0000001BF49C3FC5CA4F9FCDE6B860C937BDEB3B40A88B689505296EC9EEE9B7ED7D5411BC5C500C23283B"
+                }
+            }
+        ],
         "products": [
             {
                 "name": "default",
                 "signingConfig": "default",
                 "targetSdkVersion": "6.1.0(23)",
-                "compatibleSdkVersion": "6.1.0(23)",
+                "compatibleSdkVersion": "6.0.0(20)",
                 "runtimeOS": "HarmonyOS",
                 "buildOption": {
                     "strictMode": {
